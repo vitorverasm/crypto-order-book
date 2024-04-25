@@ -2,8 +2,9 @@ import { StatusBar } from "expo-status-bar";
 import { useCallback, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import ConnectionManager from "./app/modules/connection/components/connection-manager";
-import * as WebsocketClient from "./app/shared/services/websocket";
 import { OrderBook } from "./app/modules/order-book/components/order-book";
+import * as WebsocketClient from "./app/shared/services/websocket";
+import { ReduxStoreProvider } from "./app/shared/state/redux-store-provider";
 
 export default function App() {
   const [connectionState, setConnectionState] = useState<
@@ -27,20 +28,22 @@ export default function App() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Crypto Order Book</Text>
-        <ConnectionManager
-          connectionState={connectionState}
-          connect={connect}
-          disconnect={disconnect}
-        />
-        <View style={styles.orderBookContainer}>
-          <OrderBook />
+    <ReduxStoreProvider>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Crypto Order Book</Text>
+          <ConnectionManager
+            connectionState={connectionState}
+            connect={connect}
+            disconnect={disconnect}
+          />
+          <View style={styles.orderBookContainer}>
+            <OrderBook />
+          </View>
+          <StatusBar style="auto" />
         </View>
-        <StatusBar style="auto" />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ReduxStoreProvider>
   );
 }
 
