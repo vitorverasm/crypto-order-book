@@ -19,8 +19,16 @@ export default function App() {
     setConnectionState("Disconnected");
   }, []);
 
+  const newMessageHandler = useCallback((event: MessageEvent<any>) => {
+    console.log("New message: ", event.data);
+  }, []);
+
   const connect = useCallback(() => {
-    WebsocketClient.connect(onConnect);
+    WebsocketClient.connect({
+      onSuccessfulConnection: onConnect,
+      onClose: onDisconnect,
+      onNewMessage: newMessageHandler,
+    });
   }, [onConnect]);
 
   const disconnect = useCallback(() => {
