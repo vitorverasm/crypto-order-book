@@ -1,6 +1,6 @@
-type Precision = 'P0' | 'P1' | 'P2' | 'P3' | 'P4'
+export type Precision = 'P0' | 'P1' | 'P2' | 'P3' | 'P4'
 
-type Frequency = 'F0' | 'F1'
+export type Frequency = 'F0' | 'F1'
 
 export type SubscriptionMessage = {
     /**
