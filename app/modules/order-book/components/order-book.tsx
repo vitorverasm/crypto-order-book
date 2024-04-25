@@ -12,66 +12,76 @@ export function OrderBook() {
       <Text style={styles.pairLabel}>
         <Text style={{ fontWeight: "bold" }}>Pair:</Text> BTC/USDT
       </Text>
-      <View style={{ flexDirection: "row", flex: 1, marginTop: 8 }}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#2A7948",
-            paddingRight: 4,
-            alignItems: "flex-end",
-          }}
-        >
-          <FlatList
-            data={bids}
-            ListHeaderComponent={() => (
-              <View style={{ flexDirection: "row", gap: 16, marginBottom: 8 }}>
-                <Text style={styles.label}>Count</Text>
-                <Text style={styles.label}>Amount</Text>
-                <Text style={styles.label}>Price</Text>
-              </View>
-            )}
-            renderItem={({ item }) => (
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 16,
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Text>{item.count}</Text>
-                <Text>{item.amount}</Text>
-                <Text>{item.price}</Text>
-              </View>
-            )}
-          />
+      {bids.length > 0 && asks.length > 0 ? (
+        <View style={{ flexDirection: "row", flex: 1, marginTop: 8 }}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#2A7948",
+              paddingRight: 4,
+              alignItems: "flex-end",
+            }}
+          >
+            <FlatList
+              data={bids}
+              ListHeaderComponent={() => (
+                <View
+                  style={{ flexDirection: "row", gap: 16, marginBottom: 8 }}
+                >
+                  <Text style={styles.label}>Count</Text>
+                  <Text style={styles.label}>Amount</Text>
+                  <Text style={styles.label}>Price</Text>
+                </View>
+              )}
+              renderItem={({ item }) => (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 16,
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Text>{item.count}</Text>
+                  <Text>{item.amount}</Text>
+                  <Text>{item.price}</Text>
+                </View>
+              )}
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#B91C1C",
+              paddingLeft: 4,
+              alignItems: "flex-start",
+            }}
+          >
+            <FlatList
+              data={asks}
+              ListHeaderComponent={() => (
+                <View
+                  style={{ flexDirection: "row", gap: 16, marginBottom: 8 }}
+                >
+                  <Text style={styles.label}>Price</Text>
+                  <Text style={styles.label}>Amount</Text>
+                  <Text style={styles.label}>Count</Text>
+                </View>
+              )}
+              renderItem={({ item }) => (
+                <View style={{ flexDirection: "row", gap: 16 }}>
+                  <Text>{item.price}</Text>
+                  <Text>{item.amount}</Text>
+                  <Text>{item.count}</Text>
+                </View>
+              )}
+            />
+          </View>
         </View>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#B91C1C",
-            paddingLeft: 4,
-            alignItems: "flex-start",
-          }}
-        >
-          <FlatList
-            data={asks}
-            ListHeaderComponent={() => (
-              <View style={{ flexDirection: "row", gap: 16, marginBottom: 8 }}>
-                <Text style={styles.label}>Price</Text>
-                <Text style={styles.label}>Amount</Text>
-                <Text style={styles.label}>Count</Text>
-              </View>
-            )}
-            renderItem={({ item }) => (
-              <View style={{ flexDirection: "row", gap: 16 }}>
-                <Text>{item.price}</Text>
-                <Text>{item.amount}</Text>
-                <Text>{item.count}</Text>
-              </View>
-            )}
-          />
-        </View>
-      </View>
+      ) : (
+        <Text style={{ marginLeft: 16, color: "#ECECEC", marginTop: 32 }}>
+          Waiting for connection...
+        </Text>
+      )}
     </View>
   );
 }

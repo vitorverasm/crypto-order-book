@@ -1,18 +1,20 @@
 import { StatusBar } from "expo-status-bar";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ConnectionManager from "../../app/modules/connection/components/connection-manager";
 import { OrderBook } from "../../app/modules/order-book/components/order-book";
-import { seedInitial } from "../../app/modules/order-book/state/order-book-slice";
+import {
+  seedInitial,
+  updateAsks,
+  updateBids,
+} from "../../app/modules/order-book/state/order-book-slice";
 import { parseOrderBookEntry } from "../../app/modules/order-book/utils/parseOrderBookEntry";
 import * as WebsocketClient from "../../app/shared/services/websocket";
-import { RootState } from "../../app/shared/state/store";
+import { BookEntry } from "../modules/order-book/types/book-entry";
 
 export default function HomePage() {
   const dispatch = useDispatch();
-  const bids = useSelector((state: RootState) => state.orderBook.bids);
-  const asks = useSelector((state: RootState) => state.orderBook.asks);
   const [connectionState, setConnectionState] = useState<
     "Disconnected" | "Connected"
   >("Disconnected");
@@ -36,18 +38,17 @@ export default function HomePage() {
         );
       }
       if (message && message[1].length === 3) {
-        // console.log("Formatted: ", parseOrderBookEntry(message[1]));
+        const newBookOrder = parseOrderBookEntry(message[1]);
+        if (newBookOrder.amount > 0) {
+          dispatch(updateBids(newBookOrder));
+        }
+
+        if (newBookOrder.amount < 0) {
+          dispatch(updateAsks(newBookOrder));
+        }
       }
     }
   }, []);
-
-  useEffect(() => {
-    console.log("bids:", bids);
-  }, [bids]);
-
-  useEffect(() => {
-    console.log("asks:", asks);
-  }, [asks]);
 
   const connect = useCallback(() => {
     WebsocketClient.connect({
