@@ -29,7 +29,6 @@ export default function HomePage() {
     const message = JSON.parse(event.data);
     if (!message?.event) {
       if (Array.isArray(message) && message[1].length > 3) {
-        // console.log("Initial seed");
         dispatch(
           seedInitial(
             message[1].map((entry: any[]) => parseOrderBookEntry(entry))
@@ -37,7 +36,7 @@ export default function HomePage() {
         );
       }
       if (message && message[1].length === 3) {
-        // console.log("Formatted: ", parseOrderBookEntry(message));
+        // console.log("Formatted: ", parseOrderBookEntry(message[1]));
       }
     }
   }, []);
@@ -71,10 +70,10 @@ export default function HomePage() {
           connect={connect}
           disconnect={disconnect}
         />
-        <View style={styles.orderBookContainer}>
-          <OrderBook />
-        </View>
         <StatusBar style="auto" />
+      </View>
+      <View style={styles.orderBookContainer}>
+        <OrderBook />
       </View>
     </SafeAreaView>
   );
@@ -94,5 +93,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 24, fontWeight: "bold", color: "#fff" },
   orderBookContainer: {
     marginTop: 32,
+    flex: 5,
+    alignSelf: "stretch",
   },
 });
