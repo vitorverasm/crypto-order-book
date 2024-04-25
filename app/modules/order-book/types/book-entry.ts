@@ -19,3 +19,11 @@ export type BookEntry = {
     amount: number
 }
 
+export type BookEntryWithTotal = BookEntry & {
+    /**
+     * Total cumulative sum of the price level
+     * total = current amount + prev total
+     */
+    total: number
+}
+
