@@ -4,7 +4,7 @@ export type BookEntry = {
      *
      * Float
      */
-    price: number,
+    price: string,
     /**
      * Number of orders at that price level (delete price level if count = 0)
      *
