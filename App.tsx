@@ -5,6 +5,7 @@ import ConnectionManager from "./app/modules/connection/components/connection-ma
 import { OrderBook } from "./app/modules/order-book/components/order-book";
 import * as WebsocketClient from "./app/shared/services/websocket";
 import { ReduxStoreProvider } from "./app/shared/state/redux-store-provider";
+import { parseOrderBookEntry } from "./app/modules/order-book/utils/parseOrderBookEntry";
 
 export default function App() {
   const [connectionState, setConnectionState] = useState<
@@ -20,7 +21,15 @@ export default function App() {
   }, []);
 
   const newMessageHandler = useCallback((event: MessageEvent<any>) => {
-    console.log("New message: ", event.data);
+    const message = JSON.parse(event.data);
+    if (!message?.event) {
+      if (Array.isArray(message) && message[1].length > 3) {
+        console.log("Initial seed");
+      }
+      if (message && message[1].length === 3) {
+        console.log("Formatted: ", parseOrderBookEntry(message));
+      }
+    }
   }, []);
 
   const connect = useCallback(() => {
