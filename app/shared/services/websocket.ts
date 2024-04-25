@@ -2,7 +2,11 @@ import SubscribeTo from '../../modules/order-book/constants/pair-connection-mess
 
 let connection: WebSocket | undefined;
 
-function connect(callback: () => void) {
+function connect({ onSuccessfulConnection, onNewMessage, onClose }: {
+    onSuccessfulConnection?: () => void;
+    onClose?: () => void;
+    onNewMessage?: (event: MessageEvent<any>) => void
+}) {
     if (connection === undefined) {
         const client = new WebSocket('wss://api-pub.bitfinex.com/ws/2')
 
@@ -12,11 +16,26 @@ function connect(callback: () => void) {
         });
 
         client.addEventListener("message", (event) => {
-            console.log('[ws] new message: ', event.data)
+            if (onNewMessage) {
+                onNewMessage(event)
+            }
+        });
+
+        client.addEventListener("close", () => {
+            if (connection !== undefined) {
+                connection.close()
+                connection = undefined
+                console.log('[ws] info: Connection closed')
+                if (onClose) {
+                    onClose()
+                }
+            }
         });
 
         connection = client
-        callback()
+        if (onSuccessfulConnection) {
+            onSuccessfulConnection()
+        }
     }
     return connection
 }
