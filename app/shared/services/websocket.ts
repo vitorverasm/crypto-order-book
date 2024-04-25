@@ -1,11 +1,14 @@
+import SubscribeTo from '../../modules/order-book/constants/pair-connection-messages'
+
 let connection: WebSocket | undefined;
 
 function connect(callback: () => void) {
     if (connection === undefined) {
         const client = new WebSocket('wss://api-pub.bitfinex.com/ws/2')
 
-        client.addEventListener("open", (event) => {
+        client.addEventListener("open", () => {
             console.log('[ws] info: Connection opened')
+            client.send(SubscribeTo.btcUsd)
         });
 
         client.addEventListener("message", (event) => {
