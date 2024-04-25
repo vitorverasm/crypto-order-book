@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import ConnectionManager from "./app/modules/connection/components/connection-manager";
 import * as WebsocketClient from "./app/shared/services/websocket";
+import { OrderBook } from "./app/modules/order-book/components/order-book";
 
 export default function App() {
   const [connectionState, setConnectionState] = useState<
@@ -34,6 +35,9 @@ export default function App() {
           connect={connect}
           disconnect={disconnect}
         />
+        <View style={styles.orderBookContainer}>
+          <OrderBook />
+        </View>
         <StatusBar style="auto" />
       </View>
     </SafeAreaView>
@@ -46,10 +50,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#28445b",
     alignItems: "flex-start",
     justifyContent: "flex-start",
     padding: 16,
   },
-  title: { fontSize: 24 },
+  title: { fontSize: 24, fontWeight: "bold", color: "#fff" },
+  orderBookContainer: {
+    marginTop: 32,
+  },
 });

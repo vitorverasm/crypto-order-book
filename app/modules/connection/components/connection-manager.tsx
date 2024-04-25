@@ -12,9 +12,9 @@ export default function ConnectionManager({
   disconnect,
 }: Readonly<ConnectionManagerProps>) {
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.connectionStateContainer}>
-        <Text>
+        <Text style={{ color: "#fff" }}>
           <Text style={{ fontWeight: "bold" }}>Connection state:</Text>{" "}
           {connectionState}
         </Text>
@@ -44,9 +44,6 @@ export default function ConnectionManager({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   connectionStateContainer: { marginTop: 32 },
   buttonsContainer: {
     marginTop: 16,
@@ -55,5 +52,5 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   button: { padding: 8, backgroundColor: "#ECECEC", borderRadius: 4 },
-  buttonLabel: { fontSize: 16, fontWeight: "bold" },
+  buttonLabel: { fontSize: 16, fontWeight: "bold", color: "#fff" },
 });
