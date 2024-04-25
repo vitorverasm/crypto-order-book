@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { BookEntryWithTotal } from '../types/book-entry'
+import { createSlice } from '@reduxjs/toolkit'
+import { BookEntry } from '../types/book-entry'
 
 export interface OrderBookState {
-    bids: BookEntryWithTotal[],
-    asks: BookEntryWithTotal[]
+    bids: BookEntry[],
+    asks: BookEntry[]
 }
 
 const initialState: OrderBookState = {
@@ -16,11 +16,15 @@ export const orderBookSlice = createSlice({
     name: 'orderBook',
     initialState,
     reducers: {
-        incrementByAmount: (state, action: PayloadAction<number>) => {
+        seedInitial: (state, action: PayloadAction<BookEntry[]>) => {
+            const entries = action.payload;
+
+            state.bids = entries.filter(entry => entry.amount > 0)
+            state.asks = entries.filter(entry => entry.amount < 0)
         },
     },
 })
 
-export const { incrementByAmount } = orderBookSlice.actions
+export const { seedInitial } = orderBookSlice.actions
 
 export default orderBookSlice.reducer
